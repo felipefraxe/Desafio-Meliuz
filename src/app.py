@@ -1,6 +1,9 @@
 from flask import Flask
+from controllers.product import products_bp
 
 app = Flask(__name__)
+
+app.register_blueprint(products_bp)
 
 @app.route("/")
 def hello_world():
