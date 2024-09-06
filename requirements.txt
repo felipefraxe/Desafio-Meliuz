@@ -1,2 +1,6 @@
 flask
 pandas
+numpy
+scikit-learn
+pytest
+pytest-mock

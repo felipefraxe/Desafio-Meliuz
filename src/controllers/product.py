@@ -1,10 +1,11 @@
 from flask import Blueprint, jsonify
-from services.product import fetch_products
+import services.product
 
 products_bp = Blueprint("products_bp", __name__)
 
-@products_bp.route("/recomendacao/<int:user_id>", methods=["GET"])
+@products_bp.route("/recommend/<int:user_id>", methods=["GET"])
 def get_recommendations(user_id):
-    print(user_id)
-    produtos_recomendados = fetch_products()
-    return jsonify(produtos_recomendados.to_dict(orient="records"))
+    try:
+        return jsonify(services.product.fetch_top_k_recommended(5)), 200
+    except Exception as err:
+        return jsonify({"error": f"Erro interno do servidor: {str(err)}"}), 500
