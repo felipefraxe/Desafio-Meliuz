@@ -23,6 +23,9 @@ def load_products(path="src/data/xpto_sales_products_mar_may_2024.csv"):
 
 
 def load_recommended_data():
+    """
+    Manipula dados para com agregações úteis para algoritmo de recomendação
+    """
     try:
         df = load_products()
         agg_df = df.groupby(["product_id"]).agg({
@@ -39,5 +42,6 @@ def load_recommended_data():
         agg_df = agg_df.drop(columns=["product_price"]).merge(min_price_info, on="product_id")
 
         return agg_df
+
     except Exception as err:
         raise err
