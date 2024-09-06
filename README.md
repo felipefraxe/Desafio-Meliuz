@@ -16,7 +16,7 @@ Este projeto foi desenvolvido para ajudar a **xpto.com.br** a conter a queda no 
     cd Desafio-Meliuz
     ```
 
-1.2 Faça o download do arquivo `src/data/xpto_sales_products_mar_may_2024.csv` (disponível no documento pdf do case), coloque-o na pasta `src/data/`, a partir da raiz do projeto.
+1.2 Faça o download do arquivo `src/data/xpto_sales_products_mar_may_2024.csv` (disponível no documento pdf do case), crie e coloque-o na pasta `src/data/`, a partir da raiz do projeto.
 
 
 ### 2. Ativando o container Docker
