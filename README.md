@@ -35,11 +35,11 @@ Este projeto foi desenvolvido para ajudar a **xpto.com.br** a conter a queda no 
     ```
     docker exec -it desafio-meliuz-api-1 bash
     ```
+
 3.2 Execute os comandos:
     ```
     pytest tests/services/product.py
     ```
-
     ```
     pytest tests/models/product.py
     ```
