@@ -26,28 +26,16 @@ def fetch_top_k_recommended(k=5):
     :return: DataFrame com os produtos processados.
     """
     try:
-        df = models.product.load_products()
-        agg_df = df.groupby(["product_id"]).agg({
-            "product_title": "first",
-            "product_image_url": "first",
-            "sales_per_day": lambda x: list(x.groupby(df["sale_date"].dt.to_period('M')).sum()),
-            "product_price": "mean",
-        }).reset_index()
-        agg_df.rename(columns={ "sales_per_day": "sales_per_month" }, inplace=True)
+        df = models.product.load_recommended_data()        
 
-        agg_df["sales_slope"] = agg_df["sales_per_month"].apply(calculate_sales_slope)
+        df["sales_slope"] = df["sales_per_month"].apply(calculate_sales_slope)
         
-        agg_df = agg_df[agg_df["sales_slope"] > 0]
-        agg_df = agg_df[agg_df["sales_slope"] >= agg_df["sales_slope"].quantile(0.25)]
+        df = df[df["sales_slope"] > 0]
+        df = df[df["sales_slope"] >= df["sales_slope"].quantile(0.25)]
 
-        agg_df["total_revenue"] = agg_df["sales_per_month"].apply(sum) * agg_df["product_price"]
+        growing_products = df.sort_values(by="total_revenue", ascending=False)
 
-        growing_products = agg_df.sort_values(by="total_revenue", ascending=False)
-
-        min_price_info = df.loc[df.groupby("product_id")["product_price"].idxmin(), ["product_id", "product_price", "store_name", "store_id"]]
-        growing_products = growing_products \
-            .drop(columns=["product_price", "total_revenue", "sales_slope", "sales_per_month"]) \
-            .merge(min_price_info, on="product_id")
+        growing_products.drop(columns=["sales_per_month", "sales_slope", "total_revenue"], inplace=True)
 
         return growing_products.head(k).to_dict(orient="records")
 
